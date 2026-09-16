@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DroneCheck - Investigação e Privacidade</title>
+    <style>
+        :root {
+            --bg-primary: #121824;
+            --bg-secondary: #1a2333;
+            --bg-card: #222f47;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --border: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            max-width: 1400px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            gap: 2rem;
+        }
+
+        /* Abas Laterais */
+        .tabs-nav {
+            display: flex;
+            flex-direction: column;
+            width: 280px;
+            gap: 0.5rem;
+        }
+
+        .tab-btn {
+            background-color: var(--bg-secondary);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .tab-btn:hover {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border-color: var(--accent);
+        }
+
+        .tab-btn.active {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+
+        .tab-btn .tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+        }
+
+        /* Conteúdo das Abas */
+        .content-panel {
+            flex: 1;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+            min-height: 500px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-badge.fake {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .status-badge.fato {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        p {
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .box-info {
+            background-color: var(--bg-card);
+            border-left: 4px solid var(--accent);
+            padding: 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin-top: 1.5rem;
+        }
+
+        .box-info h4 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Área de Cópia de Código de Exemplo (para simular análise técnica) */
+        .code-block {
+            background-color: #0f172a;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: #38bdf8;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            background-color: var(--bg-secondary);
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .tabs-nav {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🛸 DroneCheck</h1>
+        <span style="color: var(--text-muted); font-size: 0.9rem;">Central de Fact-Checking e Legislação</span>
+    </header>
+
+    <div class="container">
+        <!-- Navegação por Abas (Esquerda) -->
+        <nav class="tabs-nav">
+            <button class="tab-btn active" onclick="openTab(event, 'boato1')">
+                <span class="tag">Fake News #1</span>
+                Visão de Raio-X e Paredes
+            </button>
+            <button class="tab-btn" onclick="openTab(event, 'boato2')">
+                <span class="tag">Fake News #2</span>
+                Reconhecimento Facial de Longe
+            </button>
+            <button class="tab-btn" onclick="openTab(event, 'boato3')">
+                <span class="tag">Fake News #3</span>
+                Insetos Espiões 5G
+            </button>
+            <button class="tab-btn" onclick="openTab(event, 'legislacao')">
+                <span class="tag">Legislação Real</span>
+                O que diz a LGPD e a ANAC?
+            </button>
+        </nav>
+
+        <!-- Painel de Conteúdo (Direita) -->
+        <main class="content-panel">
+            
+            <!-- ABA 1 -->
+            <div id="boato1" class="tab-content active">
+                <span class="status-badge fake">FALSO / BOATO</span>
+                <h2>Drones comerciais conseguem ver através de paredes?</h2>
+                <p><strong>O boato:</strong> Vídeos nas redes sociais afirmam que drones populares de baixo custo estão sendo usados por vizinhos ou criminosos para filmar pessoas dentro de suas casas através de paredes de alvenaria e cortinas blecaute usando sensores de "raio-X".</p>
+                <p><strong>A realidade técnica:</strong> Drones civis usam câmeras ópticas normais ou sensores térmicos (infravermelho). O infravermelho detecta calor superficial, mas <strong>não atravessa paredes de concreto ou vidro</strong> (o vidro, inclusive, reflete a radiação térmica). Câmeras ópticas precisam de linha de visão direta.</p>
+                
+                <div class="box-info">
+                    <h4>Verba de Análise Prática</h4>
+                    <p>Sensores capazes de "ver" através de barreiras sólidas (como radares de penetração no solo - GPR) são extremamente pesados, caros e usados apenas para fins geológicos ou militares em aeronaves de grande porte, sendo impossíveis de instalar em drones comuns de mercado.</p>
+                </div>
+            </div>
+
+            <!-- ABA 2 -->
+            <div id="boato2" class="tab-content">
+                <span class="status-badge fake">EXAGERADO / INVIÁVEL</span>
+                <h2>Biometria e varredura de dados a quilômetros de distância</h2>
+                <p><strong>O boato:</strong> Mensagens de texto alertam que drones sobrevoando cidades a mais de 2 km de altura conseguem escanear o rosto de pedestres, identificar o CPF e roubar dados de celulares via aproximação aproximada.</p>
+                <p><strong>A realidade técnica:</strong> Embora drones militares possuam zoom óptico avançado, o reconhecimento facial exige angulação adequada, iluminação estável e alta resolução. Drones comerciais comuns perdem o foco com a vibração do vento em distâncias longas. Além disso, a interceptação de dados móveis (como Wi-Fi ou Bluetooth) decai drasticamente com a distância.</p>
+                
+                <div class="box-info">
+                    <h4>Limitação Física</h4>
+                    <p>Para um drone capturar dados de um smartphone via radiofrequência, ele precisaria estar a pouquíssimos metros do dispositivo e o celular precisaria estar vulnerável e conectado a uma rede aberta simulada pelo drone (Ataque IMSI Catcher), algo inviável em voos altos de monitoramento.</p>
+                </div>
+            </div>
+
+            <!-- ABA 3 -->
+            <div id="boato3" class="tab-content">
+                <span class="status-badge fake">FALSO</span>
